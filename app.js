@@ -3,7 +3,7 @@ const { App } = require('@slack/bolt');
 
 // Initializes your app with your bot token and signing secret
 const app = new App ({
-    token: 'xoxb-4077033331937-4105870885442-NVRJmkQTmcSnC9Yv8BZ2b8Hw',
+    token: 'xoxb-4077033331937-4105870885442-wVZ2VfMGArOwbEBtcqWPPbC7',
     signingSecret: '219e55d8d24c3b4b05ca82b6ed96d051',
     port: process.envPORT || 3000
 });
