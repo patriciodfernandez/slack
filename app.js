@@ -1,23 +1,20 @@
-
-const { App } = require('@slack/bolt');
+const { App } = require("@slack/bolt");
 
 // Initializes your app with your bot token and signing secret
-const app = new App ({
-    token: 'xoxb-4077033331937-4105870885442-wVZ2VfMGArOwbEBtcqWPPbC7',
-    signingSecret: '219e55d8d24c3b4b05ca82b6ed96d051',
-    port: process.envPORT || 3000
+const app = new App({
+  token: "xoxb-4077033331937-4105870885442-DrZlmT2ROho2tqCf5DeNYAvQ",
+  signingSecret: "219e55d8d24c3b4b05ca82b6ed96d051",
+  port: process.envPORT || 3000,
 });
 
 (async () => {
   // Start your app
   await app.start(process.env.PORT || 3000);
 
-  console.log('⚡️ Bolt app is running!');
+  console.log("⚡️ Bolt app is running!");
 })();
 
-
-app.shortcut('who_am_i', async ({ shortcut, ack, client, logger }) => {
-
+app.shortcut("who_am_i", async ({ shortcut, ack, client, logger }) => {
   try {
     // Acknowledge shortcut request
     await ack();
@@ -29,25 +26,26 @@ app.shortcut('who_am_i', async ({ shortcut, ack, client, logger }) => {
         type: "modal",
         title: {
           type: "plain_text",
-          text: "My App"
+          text: "My App",
         },
         close: {
           type: "plain_text",
-          text: "Close"
+          text: "Close",
         },
-        blocks: [{
+        blocks: [
+          {
             type: "section",
             text: {
               type: "mrkdwn",
-              text: "Hello Congrats!!!"
-            }
-        }]
-      }
+              text: "Hello Congrats!!!",
+            },
+          },
+        ],
+      },
     });
 
     logger.info(result);
-  }
-  catch (error) {
+  } catch (error) {
     logger.error(error);
   }
 });
