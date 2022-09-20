@@ -1,45 +1,53 @@
-const {App} = require('@slack/bolt')
 
+const { App } = require('@slack/bolt');
+
+// Initializes your app with your bot token and signing secret
 const app = new App ({
     token: 'xoxb-4077033331937-4105870885442-BFnhNhLvbzXWexpqClev0fMs',
     signingSecret: '219e55d8d24c3b4b05ca82b6ed96d051',
     port: process.envPORT || 3000
 });
 
-// Listens to incoming messages that contain "hello"
-app.message('hello', async ({ message, say }) => {
-    // say() sends a message to the channel where the event was triggered
-    await say({
-      blocks: [
-        {
-          "type": "section",
-          "text": {
-            "type": "mrkdwn",
-            "text": `Hey there <@${message.user}>!`
-          },
-          "accessory": {
-            "type": "button",
-            "text": {
-              "type": "plain_text",
-              "text": "Click Me"
-            },
-            "action_id": "button_click"
-          }
-        }
-      ],
-      text: `Hey there <@${message.user}>!`
-    });
-  });
-  
-  app.action('button_click', async ({ body, ack, say }) => {
-    // Acknowledge the action
+(async () => {
+  // Start your app
+  await app.start(process.env.PORT || 3000);
+
+  console.log('⚡️ Bolt app is running!');
+})();
+
+
+app.shortcut('who_am_i', async ({ shortcut, ack, client, logger }) => {
+
+  try {
+    // Acknowledge shortcut request
     await ack();
-    await say(`<@${body.user.id}> clicked the button`);
-  });
-  
-  (async () => {
-    // Start your app
-    await app.start(process.env.PORT || 3000);
-  
-    console.log('⚡️ Bolt app is running!');
-  })();
+
+    // Call the views.open method using one of the built-in WebClients
+    const result = await client.views.open({
+      trigger_id: shortcut.trigger_id,
+      view: {
+        type: "modal",
+        title: {
+          type: "plain_text",
+          text: "My App"
+        },
+        close: {
+          type: "plain_text",
+          text: "Close"
+        },
+        blocks: [{
+            type: "section",
+            text: {
+              type: "mrkdwn",
+              text: "Hello Congrats!!!"
+            }
+        }]
+      }
+    });
+
+    logger.info(result);
+  }
+  catch (error) {
+    logger.error(error);
+  }
+});
